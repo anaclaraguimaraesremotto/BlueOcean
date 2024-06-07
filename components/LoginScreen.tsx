@@ -131,7 +131,6 @@ const styles = StyleSheet.create({
     width: '100%',
     display: 'flex',
     alignItems: 'center',
-
   },
   loginButton: {
     backgroundColor: '#376BA0',
