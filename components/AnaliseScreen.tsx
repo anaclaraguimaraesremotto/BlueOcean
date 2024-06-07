@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, Image } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
@@ -10,21 +9,33 @@ type RootStackParamList = {
     ManutencaoScreen: undefined;
     AnaliseScreen: undefined;
   };
-type ManutencaoScreenNavigationProp = StackNavigationProp<RootStackParamList, 'ManutencaoScreen'>;
+type AnaliseScreenNavigationProp = StackNavigationProp<RootStackParamList, 'AnaliseScreen'>;
 
-const ManutencaoScreen: React.FC = () => {
-    const navigation = useNavigation<ManutencaoScreenNavigationProp>();
+const AnaliseScreen: React.FC = () => {
+    const navigation = useNavigation<AnaliseScreenNavigationProp>();
 
     return (
         <View style={styles.container}>
             <View style={styles.head}>
+            
             <Image source={require('../assets/images/blueocean-logo.png')} />
             </View>
-            <Text style={styles.title}>|Controle de Manuteção</Text>
-            <Text style={styles.label}>Câmera IV:</Text>
-            <Text style={styles.label}>Sensores:</Text>
-            <Text style={styles.label}>Saúde da Bateria:</Text>
-            <Text style={styles.label}>Status do GPS:</Text>
+            <Text style={styles.title}>|Controle da Região</Text>
+            <Text style={styles.label}>Temperatura da Água:</Text>
+            <Text style={styles.label}>Turbidez:</Text>
+            <Text style={styles.label}>PH:</Text>
+            <Text style={styles.label}>Oxigênio Dissolvido (OD):</Text>
+            <Text style={styles.label}>Nitrato:</Text>
+            <Text style={styles.label}>Fostato:</Text>
+            <Text style={styles.label}>Salinidade:</Text>
+            <Text style={styles.title}>|Comparativos</Text>
+            <Text style={styles.label}>Mês Anterior:</Text>
+            <Text style={styles.label}>Mês Seguinte:</Text>
+            <Text style={styles.label}>Ultimos 3 meses:</Text>
+            <Text style={styles.label}>Ultimos 6 meses:</Text>
+            <Text style={styles.label}>Média Anual:</Text>
+            <Text style={styles.label}>Média Histórica:</Text>
+            
         </View>
     );
 };
@@ -44,6 +55,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
 
     },
+    
     title: {
         marginTop: 20,
         marginLeft: 20,
@@ -65,4 +77,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ManutencaoScreen;
+export default AnaliseScreen;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, Image } from 'react-native';
+import { TextInput, View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useGlobalState } from '../hooks/UseGlobalState';
@@ -7,64 +7,57 @@ import { useGlobalState } from '../hooks/UseGlobalState';
 type RootStackParamList = {
   LoginScreen: undefined;
   CadastroScreen: undefined;
+  MenuScreen: undefined;
+  HomeScreen: undefined;
+  ManutencaoScreen: undefined;
+  AnaliseScreen: undefined;
 };
 
 type CadastroScreenNavigationProp = StackNavigationProp<RootStackParamList, 'CadastroScreen'>;
 
 const CadastroScreen: React.FC = () => {
-  const [name, setName] = useState('');
+  const [nomeUsuario, setNomeUsuario] = useState('');
   const [user, setUser] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [senha, setSenha] = useState('');
+  const [confirmaSenha, setConfirmaSenha] = useState('');
+  const [error, setError] = useState('');
   const { cadastro } = useGlobalState();
   const navigation = useNavigation<CadastroScreenNavigationProp>();
 
   const handleCadastro = async () => {
-    if (!name || !user || !email || !password || !confirmPassword) {
-      Alert.alert('Erro', 'Preencha todos os campos.');
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      Alert.alert('Erro', 'As senhas não coincidem.');
+    if (senha !== confirmaSenha) {
+      setError('As senhas não coincidem.');
       return;
     }
 
     try {
-      await cadastro(name, user, email, password, confirmPassword);
-      Alert.alert('Sucesso', 'Registro realizado com sucesso');
+      await cadastro(nomeUsuario, user, email, senha, confirmaSenha);
+      Alert.alert('Sucesso', 'Cadastro realizado com sucesso');
       navigation.navigate('LoginScreen');
-    } catch (error) {
-      Alert.alert('Erro', 'Falha no registro. Tente novamente.');
-      console.error(error);
+    } catch (err) {
+      setError('Erro ao realizar cadastro.');
+      console.error(err);
     }
   };
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('LoginScreen')}>
-        <View style={styles.backButtonCircle}>
-          <Text style={styles.backButtonText}>{"<"}</Text>
-        </View>
-      </TouchableOpacity>
-      <Image source={require('../assets/images/blueocean-logo.png')} style={styles.logo} />
-      <Text style={styles.title}>Criar Conta</Text>
+      <Text style={styles.title}>Cadastro</Text>
+      {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
-      <Text style={styles.label}>Nome</Text>
+      <Text style={styles.label}>Nome de Usuário</Text>
       <TextInput
         style={styles.input}
-        placeholder="Nome Completo"
-        placeholderTextColor="rgba(0, 0, 0, 0.5)"
-        value={name}
-        onChangeText={setName}
+        placeholder="Nome de Usuário"
+        value={nomeUsuario}
+        onChangeText={setNomeUsuario}
       />
 
       <Text style={styles.label}>Usuário</Text>
       <TextInput
         style={styles.input}
         placeholder="Usuário"
-        placeholderTextColor="rgba(0, 0, 0, 0.5)"
         value={user}
         onChangeText={setUser}
       />
@@ -72,8 +65,7 @@ const CadastroScreen: React.FC = () => {
       <Text style={styles.label}>E-mail</Text>
       <TextInput
         style={styles.input}
-        placeholder="E-mail"
-        placeholderTextColor="rgba(0, 0, 0, 0.5)"
+        placeholder="Email"
         keyboardType="email-address"
         value={email}
         onChangeText={setEmail}
@@ -83,33 +75,29 @@ const CadastroScreen: React.FC = () => {
       <TextInput
         style={styles.input}
         placeholder="Senha"
-        placeholderTextColor="rgba(0, 0, 0, 0.5)"
-        secureTextEntry={true}
-        value={password}
-        onChangeText={setPassword}
+        secureTextEntry
+        value={senha}
+        onChangeText={setSenha}
       />
 
       <Text style={styles.label}>Confirmar Senha</Text>
       <TextInput
         style={styles.input}
-        placeholder="Digite sua senha novamente"
-        placeholderTextColor="rgba(0, 0, 0, 0.5)"
-        secureTextEntry={true}
-        value={confirmPassword}
-        onChangeText={setConfirmPassword}
+        placeholder="Confirmar Senha"
+        secureTextEntry
+        value={confirmaSenha}
+        onChangeText={setConfirmaSenha}
       />
 
-      <View style={styles.spacing} />
-      <View style={styles.buttonArea}>
-        <TouchableOpacity style={styles.cadastroButton} onPress={handleCadastro}>
-          <Text style={styles.cadastroButtonText}>Criar Conta</Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity style={styles.button} onPress={handleCadastro}>
+        <Text style={styles.buttonText}>Cadastrar</Text>
+      </TouchableOpacity>
+
       <View style={styles.bottomTextContainer}>
-        <Text style={styles.signupText}>
+        <Text style={styles.loginText}>
           Já possui uma conta?{' '}
-          <Text style={styles.signupLink} onPress={() => navigation.navigate('LoginScreen')}>
-            Faça login.
+          <Text style={styles.loginLink} onPress={() => navigation.navigate('LoginScreen')}>
+            Faça login!
           </Text>
         </Text>
       </View>
@@ -119,100 +107,54 @@ const CadastroScreen: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#003366',
     flex: 1,
+    backgroundColor: '#003366',
     paddingHorizontal: 20,
     justifyContent: 'center',
-  },
-  backButton: {
-    position: 'absolute',
-    top: 50,
-    left: 20,
-  },
-  backButtonCircle: {
-    width: 35,
-    height: 35,
-    borderRadius: 20,
-    backgroundColor: '#e0e0e0',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  backButtonText: {
-    fontSize: 20,
-    color: '#000',
-    fontFamily: 'Raleway-Bold',
-  },
-  logo: {
-    alignSelf: 'center',
-    marginBottom: 20,
   },
   title: {
     fontSize: 26,
     color: '#ffffff',
     fontWeight: 'bold',
-    fontFamily: 'arial',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  errorText: {
+    color: 'red',
     marginBottom: 10,
     textAlign: 'center',
   },
   label: {
-    fontSize: 16,
     color: '#ffffff',
+    fontSize: 16,
     marginBottom: 5,
-    marginLeft: 10,
-    fontFamily: 'arial',
   },
   input: {
-    height: 50,
     backgroundColor: '#ffffff',
-    borderColor: '#ccc',
-    borderWidth: 1,
+    padding: 10,
     borderRadius: 10,
-    paddingHorizontal: 10,
     marginBottom: 15,
-    fontFamily: 'arial',
   },
-  spacing: {
-    height: 10,
-  },
-  buttonArea: {
-    width: '100%',
-    display: 'flex',
-    alignItems: 'center',
-  },
-  cadastroButton: {
-    backgroundColor: '#376BA0',
+  button: {
+    backgroundColor: '#0066cc',
+    paddingVertical: 15,
     borderRadius: 10,
-    height: 50,
-    width: '30%',
-    justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 20,
   },
-  cadastroButtonText: {
-    color: '#fff',
-    fontSize: 14,
-    fontWeight: 'bold',
-    fontFamily: 'arial',
+  buttonText: {
+    color: '#ffffff',
+    fontSize: 16,
   },
   bottomTextContainer: {
-    position: 'absolute',
-    bottom: 30,
-    left: 0,
-    right: 0,
+    marginTop: 20,
     alignItems: 'center',
   },
-  signupText: {
-    fontSize: 14,
-    textAlign: 'center',
+  loginText: {
     color: '#ffffff',
-    fontFamily: 'arial',
   },
-  signupLink: {
-    fontSize: 14,
-    color: '#ffffff',
-    textDecorationLine: 'underline',
+  loginLink: {
+    color: '#ff9900',
     fontWeight: 'bold',
-    fontFamily: 'arial',
   },
 });
 

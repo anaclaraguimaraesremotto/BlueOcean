@@ -1,35 +1,32 @@
-import React, { useState, useCallback } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, Dimensions, Image } from 'react-native';
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import React, { useState} from 'react';
+import { TextInput, View, Text, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { useGlobalState } from "../hooks/UseGlobalState";
+import { useGlobalState } from '../hooks/UseGlobalState';
 
 type RootStackParamList = {
-    LoginScreen: undefined;
-    CadastroScreen: undefined;
-  };
-  
-  type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, 'LoginScreen'>;
-  
+  LoginScreen: undefined;
+  CadastroScreen: undefined;
+  MenuScreen: undefined;
+  HomeScreen: undefined;
+  ManutencaoScreen: undefined;
+  AnaliseScreen: undefined;
+};
+
+type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, 'LoginScreen'>;
+
 const LoginScreen: React.FC = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
-    const { login } = useGlobalState();
-    const navigation = useNavigation<LoginScreenNavigationProp>();
-  
-    useFocusEffect(
-      useCallback(() => {
-        setError('');
-      }, [])
-    );
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const { login } = useGlobalState();
+  const navigation = useNavigation<LoginScreenNavigationProp>();
 
   const handleLogin = async () => {
     try {
       await login(email, password);
       Alert.alert('Sucesso', 'Login realizado com sucesso');
-      setError('');
-    //   navigation.navigate('');
+      navigation.navigate('HomeScreen');
     } catch (err) {
       setError('Dados inválidos.');
     }
@@ -63,10 +60,10 @@ const LoginScreen: React.FC = () => {
       />
 
       <View style={styles.spacing} />
-    <View style={styles.buttonArea}>
-      <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-        <Text style={styles.loginButtonText}>Entrar</Text>
-      </TouchableOpacity>
+      <View style={styles.buttonArea}>
+        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+          <Text style={styles.loginButtonText}>Entrar</Text>
+        </TouchableOpacity>
       </View>
       <View style={styles.bottomTextContainer}>
         <Text style={styles.signupText}>
@@ -133,40 +130,30 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   loginButton: {
-    backgroundColor: '#376BA0',
+    backgroundColor: '#0066cc',
     borderRadius: 10,
-    height: 50,
-    width: '30%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
   },
   loginButtonText: {
-    color: '#fff',
-    fontSize: 14,
-    fontWeight: 'bold',
+    color: '#ffffff',
+    fontSize: 16,
     fontFamily: 'arial',
   },
   bottomTextContainer: {
-    position: 'absolute',
-    bottom: 30,
-    left: 0,
-    right: 0,
+    marginTop: 20,
     alignItems: 'center',
   },
-  signupText: { 
-    fontSize: 14,
-    textAlign: 'center',
+  signupText: {
     color: '#ffffff',
     fontFamily: 'arial',
   },
   signupLink: {
-    fontSize: 14,
-    color: '#ffffff',
-    textDecorationLine: 'underline',
+    color: '#ff9900',
     fontWeight: 'bold',
     fontFamily: 'arial',
   },
 });
 
 export default LoginScreen;
+
