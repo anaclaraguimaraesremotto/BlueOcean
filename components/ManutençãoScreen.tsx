@@ -18,8 +18,12 @@ const ManutencaoScreen: React.FC = () => {
     return (
         <View style={styles.container}>
             <View style={styles.head}>
-            <Image source={require('../assets/images/blueocean-logo.png')} />
-            </View>
+        <TouchableOpacity style={styles.menuButton} onPress={() => navigation.navigate('MenuScreen')}>
+        <Image source={require('../assets/images/menu.png')}  style={styles.logoHead}/>
+        </TouchableOpacity>
+        <Image source={require('../assets/images/blueocean-logo.png')}  style={styles.logo}/>
+      </View>
+      <Text style={styles.title}>| Fórum de Notícias</Text>
             <Text style={styles.title}>|Controle de Manuteção</Text>
             <Text style={styles.label}>Câmera IV:</Text>
             <Text style={styles.label}>Sensores:</Text>
@@ -31,29 +35,49 @@ const ManutencaoScreen: React.FC = () => {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#ffffff',
         flex: 1,
-        width: '100%',
-    },
-    head: {
+        backgroundColor: '#ffffff',
+      },
+      head: {
         backgroundColor: '#003366',
-        width: '100%',
-        height: '10%',
-        display: 'flex',
+        height: '15%',
+        alignItems: 'center',
         justifyContent: 'center',
-        alignItems: 'center'
-
-    },
-    title: {
+        display: 'flex',
+        flexDirection: 'row',
+      },
+    menuButton: {
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        
+      },
+      
+    menuButtonText: {
+        color: '#ffffff',
+        fontSize: 16,
+      },
+      logoHead:{
+        width: 25,
+        height: 20,
+        resizeMode: 'stretch'
+      },
+      
+      logo: {
+        height: 40,
+        width: 200,
+        resizeMode: 'stretch',
+        marginRight:60, 
+        marginLeft: 20  
+      },
+      title: {
         marginTop: 20,
         marginLeft: 20,
         fontSize: 26,
         color: '#003366',
         fontWeight: 'bold',
-        fontFamily: 'arial',
+        fontFamily: 'Arial',
         marginBottom: 10,
-    },
-    
+      },
     label: {
         fontSize: 18,
         color: '#000000',

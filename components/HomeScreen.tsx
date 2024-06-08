@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList, Image, StyleSheet, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useGlobalState } from '../hooks/UseGlobalState';
@@ -29,9 +29,9 @@ const HomeScreen: React.FC = () => {
     <View style={styles.container}>
       <View style={styles.head}>
         <TouchableOpacity style={styles.menuButton} onPress={() => navigation.navigate('MenuScreen')}>
-          <Text style={styles.menuButtonText}>Menu</Text>
+        <Image source={require('../assets/images/menu.png')}  style={styles.logoHead}/>
         </TouchableOpacity>
-        <Image source={require('../assets/images/blueocean-logo.png')} />
+        <Image source={require('../assets/images/blueocean-logo.png')}  style={styles.logo}/>
       </View>
       <Text style={styles.title}>| Fórum de Notícias</Text>
       
@@ -69,8 +69,15 @@ const styles = StyleSheet.create({
   head: {
     backgroundColor: '#003366',
     height: '15%',
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  logoHead:{
+    width: 25,
+    height: 20,
+    resizeMode: 'stretch'
   },
   title: {
     marginTop: 20,
@@ -81,6 +88,13 @@ const styles = StyleSheet.create({
     fontFamily: 'Arial',
     marginBottom: 10,
   },
+  logo: {
+    height: 40,
+    width: 200,
+    resizeMode: 'stretch',
+    marginRight:60, 
+    marginLeft: 20  
+  },
   messageInputContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -90,11 +104,12 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 50,
-    backgroundColor: '#d9d9d9',
+    backgroundColor: '#f2f2f2',
     borderColor: '#ccc',
     borderWidth: 1,
-    width: '70%',
+    width: '80%',
     borderRadius: 10,
+    marginTop: 10,
     paddingHorizontal: 10,
     fontFamily: 'Arial',
     marginRight: 10,
@@ -113,10 +128,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   menuButton: {
-    backgroundColor: '#0066cc',
     paddingVertical: 10,
     paddingHorizontal: 20,
-    borderRadius: 10,
+    
   },
   menuButtonText: {
     color: '#ffffff',

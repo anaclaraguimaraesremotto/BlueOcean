@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
@@ -16,10 +16,12 @@ const AnaliseScreen: React.FC = () => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.head}>
-            
-            <Image source={require('../assets/images/blueocean-logo.png')} />
-            </View>
+             <View style={styles.head}>
+        <TouchableOpacity style={styles.menuButton} onPress={() => navigation.navigate('MenuScreen')}>
+        <Image source={require('../assets/images/menu.png')}  style={styles.logoHead}/>
+        </TouchableOpacity>
+        <Image source={require('../assets/images/blueocean-logo.png')}  style={styles.logo}/>
+      </View>
             <Text style={styles.title}>|Controle da Região</Text>
             <Text style={styles.label}>Temperatura da Água:</Text>
             <Text style={styles.label}>Turbidez:</Text>
@@ -42,20 +44,40 @@ const AnaliseScreen: React.FC = () => {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#ffffff',
         flex: 1,
-        width: '100%',
-    },
-    head: {
+        backgroundColor: '#ffffff',
+      },
+      head: {
         backgroundColor: '#003366',
-        width: '100%',
-        height: '10%',
-        display: 'flex',
+        height: '15%',
+        alignItems: 'center',
         justifyContent: 'center',
-        alignItems: 'center'
-
-    },
-    
+        display: 'flex',
+        flexDirection: 'row',
+      },
+    menuButton: {
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        
+      },
+      
+    menuButtonText: {
+        color: '#ffffff',
+        fontSize: 16,
+      },
+      logoHead:{
+        width: 25,
+        height: 20,
+        resizeMode: 'stretch'
+      },
+      
+      logo: {
+        height: 40,
+        width: 200,
+        resizeMode: 'stretch',
+        marginRight:60, 
+        marginLeft: 20  
+      },
     title: {
         marginTop: 20,
         marginLeft: 20,
