@@ -27,10 +27,6 @@ const MenuScreen: React.FC = () => {
   }, [user]);
 
   const handleSendMessage = () => {
-    if (!user) {
-      Alert.alert('Erro', 'Você precisa estar logado.');
-      return;
-    }
 
     menu('Mensagem de teste', user.email)
       .then(() => {
@@ -46,7 +42,7 @@ const MenuScreen: React.FC = () => {
     <View style={styles.container}>
       <Text style={styles.title}>{message || 'Bem-vindo!'}</Text>
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('HomeScreen')}>
-        <Text style={styles.buttonText}>Enviar Mensagem</Text>
+        <Text style={styles.buttonText}>Fórum de Noticias</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('ManutencaoScreen')}>
         <Text style={styles.buttonText}>Manutenção</Text>

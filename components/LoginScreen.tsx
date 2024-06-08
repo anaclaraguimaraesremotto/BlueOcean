@@ -1,4 +1,5 @@
-import React, { useState} from 'react';
+// screens/LoginScreen.js
+import React, { useState } from 'react';
 import { TextInput, View, Text, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -29,6 +30,7 @@ const LoginScreen: React.FC = () => {
       navigation.navigate('HomeScreen');
     } catch (err) {
       setError('Dados inválidos.');
+      console.error(err);
     }
   };
 
@@ -75,7 +77,7 @@ const LoginScreen: React.FC = () => {
       </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -156,4 +158,3 @@ const styles = StyleSheet.create({
 });
 
 export default LoginScreen;
-

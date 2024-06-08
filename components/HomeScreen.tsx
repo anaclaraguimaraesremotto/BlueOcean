@@ -1,30 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, Image, TextInput } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, FlatList, Image, StyleSheet, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { useGlobalState } from '../hooks/UseGlobalState';
-
-type RootStackParamList = {
-  LoginScreen: undefined;
-  CadastroScreen: undefined;
-  MenuScreen: undefined;
-  HomeScreen: undefined;
-  ManutencaoScreen: undefined;
-  AnaliseScreen: undefined;
-};
-
-type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'HomeScreen'>;
 
 const HomeScreen: React.FC = () => {
   const [message, setMessage] = useState('');
-  const { user, home } = useGlobalState();
-  const navigation = useNavigation<HomeScreenNavigationProp>();
-
-  useEffect(() => {
-    if (user) {
-      setMessage(`Bem-vindo, ${user.email}`);
-    }
-  }, [user]);
+  const { user, home, messages } = useGlobalState();
+  const navigation = useNavigation();
 
   const handleSendMessage = () => {
     if (!user) {
@@ -34,6 +16,7 @@ const HomeScreen: React.FC = () => {
 
     home(message, user.email)
       .then(() => {
+        setMessage('');
         Alert.alert('Sucesso', 'Mensagem enviada com sucesso');
       })
       .catch((error) => {
@@ -44,15 +27,25 @@ const HomeScreen: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.head}> 
-      <TouchableOpacity style={styles.menuButton} onPress={() => navigation.navigate('MenuScreen')}>
+      <View style={styles.head}>
+        <TouchableOpacity style={styles.menuButton} onPress={() => navigation.navigate('MenuScreen')}>
           <Text style={styles.menuButtonText}>Menu</Text>
         </TouchableOpacity>
         <Image source={require('../assets/images/blueocean-logo.png')} />
       </View>
-      <Text style={styles.title}>|Fórum de notícias</Text>
-
-      <View style={styles.message}>
+      <Text style={styles.title}>| Fórum de Notícias</Text>
+      
+      <FlatList
+        data={messages}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <View style={styles.card}>
+            <Text style={styles.cardText}>{item.mensagem}</Text>
+            <Text style={styles.cardUser}>- {item.user}</Text>
+          </View>
+        )}
+      />
+      <View style={styles.messageInputContainer}>
         <TextInput
           style={styles.input}
           placeholder="Digite sua mensagem"
@@ -60,7 +53,6 @@ const HomeScreen: React.FC = () => {
           value={message}
           onChangeText={setMessage}
         />
-
         <TouchableOpacity style={styles.button} onPress={handleSendMessage}>
           <Text style={styles.buttonText}>OK</Text>
         </TouchableOpacity>
@@ -80,7 +72,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  
   title: {
     marginTop: 20,
     marginLeft: 20,
@@ -90,13 +81,12 @@ const styles = StyleSheet.create({
     fontFamily: 'Arial',
     marginBottom: 10,
   },
-  message: {
-    position: 'absolute',
-    bottom: 20,
-    width: '100%',
-    alignItems: 'center',
+  messageInputContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    marginBottom: 20,
   },
   input: {
     height: 50,
@@ -122,11 +112,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-  menu: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginTop: 20,
-  },
   menuButton: {
     backgroundColor: '#0066cc',
     paddingVertical: 10,
@@ -136,6 +121,27 @@ const styles = StyleSheet.create({
   menuButtonText: {
     color: '#ffffff',
     fontSize: 16,
+  },
+  card: {
+    backgroundColor: '#f8f8f8',
+    borderRadius: 10,
+    padding: 15,
+    marginHorizontal: 20,
+    marginVertical: 10,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 8,
+    elevation: 1,
+  },
+  cardText: {
+    fontSize: 16,
+    marginBottom: 5,
+  },
+  cardUser: {
+    fontSize: 14,
+    color: '#555',
+    textAlign: 'right',
   },
 });
 

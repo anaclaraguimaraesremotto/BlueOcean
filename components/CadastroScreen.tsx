@@ -1,3 +1,4 @@
+// screens/CadastroScreen.js
 import React, { useState } from 'react';
 import { TextInput, View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -32,7 +33,7 @@ const CadastroScreen: React.FC = () => {
     }
 
     try {
-      await cadastro(nomeUsuario, user, email, senha, confirmaSenha);
+      const response = await cadastro(nomeUsuario, user, email, senha, confirmaSenha);
       Alert.alert('Sucesso', 'Cadastro realizado com sucesso');
       navigation.navigate('LoginScreen');
     } catch (err) {
@@ -159,3 +160,4 @@ const styles = StyleSheet.create({
 });
 
 export default CadastroScreen;
+
